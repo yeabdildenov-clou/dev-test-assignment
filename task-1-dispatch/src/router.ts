@@ -14,7 +14,7 @@ export function assignBranch(
 ): Assignment {
   const own = branches.filter((b) => b.storeId === order.storeId && b.active);
 
-  // manual — решение менеджера, дневной лимит не проверяем
+  // manual: решение менеджера, дневной лимит не проверяем
   if (order.manualBranchId) {
     const manual = own.find((b) => b.id === order.manualBranchId);
     if (manual) return make(order, manual.id, 'manual');
@@ -22,7 +22,7 @@ export function assignBranch(
 
   const picked = pickByRules(order, own);
 
-  // ближайший филиал дальше лимита — заказ не распределяем
+  // ближайший филиал дальше лимита, заказ не распределяем
   if (picked.rule === 'too_far') return make(order, null, 'too_far');
   if (!picked.branch) return make(order, null, 'unassigned');
 
@@ -54,7 +54,7 @@ function pickByRules(order: Order, own: Branch[]): { branch: Branch | null; rule
     return { branch: inCity[0], rule: 'city' };
   }
 
-  // geo: если в городе заказа несколько филиалов — выбираем из них, иначе из всех
+  // geo: если в городе несколько филиалов, выбираем из них, иначе из всех
   const pool = inCity.length > 1 ? inCity : own;
   const near = nearest(order, pool);
   if (!near) return { branch: null, rule: 'unassigned' };

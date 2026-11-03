@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
 import type { Booking } from './types.ts';
-import { TZ_OFFSET } from './time.ts';
 import { now } from './clock.ts';
 import { bookingRepo, masters, services } from './store.ts';
 import { getSlots } from './slots.ts';
@@ -86,16 +85,12 @@ export async function cancelBooking(id: string): Promise<Result> {
   return { status: 200, body: updated };
 }
 
+const ALMATY_OFFSET_MS = 5 * 60 * 60 * 1000;
+
 function almatyDate(ms: number): string {
-  return shift(ms).slice(0, 10);
+  return new Date(ms + ALMATY_OFFSET_MS).toISOString().slice(0, 10);
 }
 
 function almatyTime(ms: number): string {
-  return shift(ms).slice(11, 16);
-}
-
-// ISO-строка момента, сдвинутого в локальное время Алматы (для разбора даты и HH:mm)
-function shift(ms: number): string {
-  const offsetMs = Number(TZ_OFFSET.slice(0, 3)) * 60 * 60 * 1000;
-  return new Date(ms + offsetMs).toISOString();
+  return new Date(ms + ALMATY_OFFSET_MS).toISOString().slice(11, 16);
 }

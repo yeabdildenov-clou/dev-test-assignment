@@ -15,7 +15,7 @@ test('normalizePhone: мусор отклоняется', () => {
   assert.equal(normalizePhone(''), null);
 });
 
-test('createBooking: два одновременных запроса на один слот — только одна запись', async () => {
+test('createBooking: два одновременных запроса на один слот, только одна запись', async () => {
   // свободный будущий слот у мастера m-1 (услуга s-cut, 60 мин), 15:00 по Алматы
   const input = {
     masterId: 'm-1',
@@ -32,7 +32,7 @@ test('createBooking: два одновременных запроса на од�
   assert.deepEqual(conflict?.body, { error: 'slot_unavailable' });
 });
 
-test('createBooking: мастер не оказывает услугу — 400', async () => {
+test('createBooking: мастер не оказывает услугу, 400', async () => {
   const res = await createBooking({
     masterId: 'm-1',
     serviceId: 's-mani', // маникюр делает только m-2
