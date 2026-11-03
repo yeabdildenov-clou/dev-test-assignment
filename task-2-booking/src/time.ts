@@ -23,6 +23,11 @@ export function weekday(date: string): Weekday {
 
 export type Range = { start: number; end: number };
 
+// Интервалы, которые только касаются краями (конец одного = начало другого), не пересекаются
 export function overlaps(a: Range, b: Range): boolean {
-  return a.start <= b.end && b.start <= a.end;
+  return a.start < b.end && b.start < a.end;
+}
+
+export function isValidDate(s: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(Date.parse(`${s}T00:00:00${TZ_OFFSET}`));
 }
