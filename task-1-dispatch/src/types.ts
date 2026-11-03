@@ -22,7 +22,7 @@ export type Order = {
   createdAt: string;
 };
 
-export type Rule = 'manual' | 'single' | 'pickup_point' | 'city' | 'geo' | 'unassigned';
+export type Rule = 'manual' | 'single' | 'pickup_point' | 'city' | 'geo' | 'too_far' | 'unassigned';
 
 export type Assignment = {
   orderId: string;
